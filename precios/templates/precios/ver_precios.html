@@ -1,0 +1,114 @@
+{% extends 'precios/base.html' %}
+{% block style %}
+footer {
+    align: right;
+    position: fixed;
+    margin: 10px;
+    right: 0;
+    bottom: 0;
+}
+{% endblock %}
+
+{% block body%}
+{% if file %}
+    <div align="center">
+        <p>Archivo: {{file.filename}}. <a href="/download">Descargar</a></p>
+    </div>
+    <div align="center" id="fileform" style="display:none">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group" style="width:50%">
+                <input type="file" class="form-control" name="file1">
+                <button class="btn btn-primary" type="submit">Subir Archivo</button>
+            </div><br>
+        </form>
+    </div>
+    <div align="center">
+    <button class="btn btn-primary" id="filebutton" onclick="showFileInput()">Subir nuevo archivo</button>
+    </div><br>
+{% elif message %}
+    <div align="center">
+        <p>{{message}}</p>
+    </div>
+{% else %}
+    <div align="center">
+        <p>No hay archivos para consultar</p>
+    </div>
+    <div align="center">
+        <h3>Subir archivo de stock</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group" style="width:50%">
+                <input type="file" class="form-control" name="file1">
+                <button class="btn btn-primary" type="submit">Subir Archivo</button>
+            </div><br>
+        </form>
+    </div>
+{% endif %}
+{% if file %}
+    <h3 align="center">Filtrar productos</h3><br>
+    <div align="center">
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3" style="width:85%">
+            <span class="input-group-text" id="label-nombre">Nombre</span>
+            <input type="text" class="form-control" id="contains" name="contains" aria-label="contains" aria-describedby="label-nombre" {% if contains %} value="{{contains}}" {% else %} placeholder="Producto" {% endif %}>
+            <span class="input-group-text" id="label-excluir">Excluir</span>
+            <input type="text" class="form-control" id="excluir" name="exclude" aria-label="excluir" aria-describedby="label-excluir" {% if exclude %} value="{{exclude}}" {% else %} placeholder="Palabras a excluir" {% endif %}>
+            <span class="input-group-text" id="label-mayor">Precio mínimo</span>
+            <input type="number" class="form-control" id="mayor" name="mayor" aria-label="mayor" aria-describedby="label-mayor" {% if mayor %} value="{{mayor}}" {% else %} placeholder="Precio mínimo" {% endif %}>            
+            <span class="input-group-text" id="label-menor">Precio máximo</span>
+            <input type="number" class="form-control" id="menor" name="menor" aria-label="menor" aria-describedby="label-menor" {% if menor %} value="{{menor}}" {% else %} placeholder="Precio máximo" {% endif %}>
+            
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Filtrar</button>
+    </form>
+    </div><br>
+
+    {% if results %}
+        <div>
+        <table class="table" align="center" style="width:65%">
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Costo</th>
+            </tr>
+            {% for codigo, nombre, precio, costo in results %}
+            <tr>
+                <td>{{nombre}}</td>
+                <td>{{precio}}</td>
+                <td>{{costo}}</td>
+            </tr>
+            {% endfor %}
+        </table><br>
+        </div>
+    {% endif %}
+    {% if contains %}
+    <div align="center">
+    <form action="/ver-cambios" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3" align="center" style="width:50%">
+        <input type="hidden" id="contains" name="contains" value="{{contains}}">
+        <input type="hidden" id="exclude" name="exclude" value="{{exclude}}">
+        <input type="hidden" id="mayor" name="mayor" value="{{mayor}}">
+        <input type="hidden" id="menor" name="menor" value="{{menor}}">
+        <span class="input-group-text" id="label-precio">Nuevo Precio</span>
+        <input type="number" class="form-control" id="precio" name="precio" aria-label="precio" aria-describedby="label-precio">
+        <span class="input-group-text" id="label-costo">Nuevo Costo</span>
+        <input type="number" class="form-control" id="costo" name="costo" aria-label="costo" aria-describedby="label-costo">
+        </div>
+        <button type="submit" class="btn btn-primary">Cambiar precios</button><br>
+    </form>
+    </div>
+    {% endif %}
+    
+    <footer>Archivo: "{{file.filename}}"</footer>
+{% endif %}
+
+<script>
+function showFileInput() {
+    document.getElementById("fileform").style.display = "block";
+    document.getElementById("filebutton").style.display = "none";
+}
+</script>
+{% endblock %}

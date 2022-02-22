@@ -1,0 +1,6 @@
+Mensaje para el Ari del lunes a la mañana:
+-Resolvé (lo que puedas de) lo de descargar el archivo (chequear la búsqueda de "Django download file"). Con eso estamos a 2 pasos de terminar ese proyecto. Va a quedar lo de acumular las modificaciones de precio 
+antes de decidir descargar el archivo y después frontendear un toque.
+-Grabá la progresión de Desconfío para Nachito
+-Probá sacarte un par de fotos CVeras y escribir algo para el CV/Linkedin.
+

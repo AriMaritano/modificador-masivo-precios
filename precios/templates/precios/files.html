@@ -1,0 +1,22 @@
+{% extends 'precios/base.html' %} {% block body%}
+<div align="center">
+{% if files %}
+<ul style="list-style-type: none">
+{% for file in files %}
+    <li>
+        <div style="display:inline-block">
+        <p style="float:left">{{file.filename}}, {{file.date_uploaded}}</p>
+        <form action="/delete-files" method="post" style="float:right">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{file.id}}">
+            <button type="submit" class="btn btn-secondary">Borrar</button>
+        </form>
+        </div>
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+    <p>No hay archivos</p>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'precios/base.html' %} {% block body%}
+
+{% if results %}
+<div>
+    <table class="table" align="center" style="width:65%">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Costo</th>
+        </tr>
+        {% for codigo, nombre, precio, costo in results %}
+        <tr>
+            <td>{{nombre}}</td>
+            <td>{{precio}}</td>
+            <td>{{costo}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div align="center">
+    <form method="post" action="#">
+        {% csrf_token %}
+        <div class="input-group mb-3" style="width:85%">            
+            <input type="hidden" id="contains" name="contains" value="{{contains}}">
+            <input type="hidden" id="exclude" name="exclude" value="{{exclude}}">
+            <input type="hidden" id="mayor" name="mayor" value="{{mayor}}">
+            <input type="hidden" id="menor" name="menor" value="{{menor}}">
+            <span class="input-group-text" id="label-precio">Nuevo Precio</span>
+            <input type="text" class="form-control" id="contaprecioins" name="precio" aria-label="precio" aria-describedby="label-precio" {% if precio %} value="{{precio}}" {% endif %}>
+            <span class="input-group-text" id="label-costo">Nuevo Costo</span>
+            <input type="text" class="form-control" id="costo" name="costo" aria-label="costo" aria-describedby="label-costo" {% if costo %} value="{{costo}}" {% endif %}>
+            <button type="submit" class="btn btn-primary">Cambiar precio</button>
+        </div>    
+    </form>
+</div>
+<div align="center">
+<form method="post" action="/guardar-cambios">
+    {% csrf_token %}
+    <input type="hidden" id="contains" name="contains" value="{{contains}}">
+    <input type="hidden" id="exclude" name="exclude" value="{{exclude}}">
+    <input type="hidden" id="precio" name="precio" value="{{precio}}">
+    <input type="hidden" id="costo" name="costo" value="{{costo}}">
+    <input type="hidden" id="mayor" name="mayor" value="{{mayor}}">
+    <input type="hidden" id="menor" name="menor" value="{{menor}}">
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+</form>
+</div>
+{% endif %}
+
+
+{% endblock %}

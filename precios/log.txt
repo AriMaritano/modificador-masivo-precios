@@ -1,0 +1,2 @@
+- Pestaña en navbar que lleve al registro de archivos. Permitir borrar archivos.
+- Punto.
